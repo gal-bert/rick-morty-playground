@@ -4,7 +4,7 @@ struct RMCharacter: Codable {
     var name: String
     var status: String
     var episode: [String]
-    var origin: Origin
+    var origin: RMOrigin
 }
 
 struct RMOrigin: Codable {
