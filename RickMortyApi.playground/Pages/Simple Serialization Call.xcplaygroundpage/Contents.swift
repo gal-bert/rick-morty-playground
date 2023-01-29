@@ -1,11 +1,5 @@
 import Foundation
 
-struct RMCharacter: Codable {
-    var name: String
-    var status: String
-    var episode: [String]
-}
-
 let endpoint = "https://rickandmortyapi.com/api/character/1"
 let url = URL(string: endpoint)
 
@@ -19,16 +13,19 @@ if let url = url {
         
         if let data = data {
             do{
-                let character = try JSONDecoder().decode(RMCharacter.self, from: data)
-                print(character.name)
-                print(character.status)
+                let character = try! JSONSerialization.jsonObject(with: data) as! [String:Any]
+                print(character["name"] as! String)
+                print(character["status"] as! String)
                 
-                for episode in character.episode {
+                let location = character["location"] as! [String:Any]
+                print(location["name"] as! String)
+                
+                for episode in (character["episode"] as! [String]) {
                     print(episode)
                 }
                 
             } catch {
-                print("JSON Decoder error:", error.localizedDescription)
+                print("JSON Serialization error:", error.localizedDescription)
             }
         } else {
             print("Data error:", error!.localizedDescription)
@@ -38,6 +35,4 @@ if let url = url {
     task.resume()
     
 }
-
-
 
